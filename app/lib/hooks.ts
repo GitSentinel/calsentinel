@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { auth, signIn } from "./auth";
+import { auth, signIn, signOut } from "./auth";
 
 export async function requireUser() {
   const session = await auth();
@@ -19,4 +19,9 @@ export async function signInWithGoogle() {
 export async function signInWithGitHub() {
   "use server";
   await signIn("github");
+}
+
+export async function signOutButton() {
+  "use server";
+  await signOut();
 }
