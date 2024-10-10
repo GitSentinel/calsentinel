@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { CalendarX2, Clock, VideoIcon } from "lucide-react";
 import { notFound } from "next/navigation";
 import { RenderCalendar } from "@/app/components/bookingForm/RenderCalendar";
+import { TimeTable } from "@/app/components/bookingForm/TimeTable";
 
 async function getData(eventUrl: string, userName: string) {
   const data = await prisma.eventType.findFirst({
@@ -44,10 +45,21 @@ async function getData(eventUrl: string, userName: string) {
 
 export default async function BookingFormRoute({
   params,
+  searchParams,
 }: {
   params: { username: string; eventUrl: string };
+  searchParams: { date?: string };
 }) {
   const data = await getData(params.eventUrl, params.username);
+
+  const selectedDate = searchParams.date
+    ? new Date(searchParams.date)
+    : new Date();
+  const formattedDate = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  }).format(selectedDate);
 
   return (
     <div className="min-h-screen w-screen flex items-center justify-center">
@@ -72,7 +84,7 @@ export default async function BookingFormRoute({
               <p className="flex items-center">
                 <CalendarX2 className="size-4 mr-2 text-primary" />
                 <span className="text-sm font-medium text-muted-foreground">
-                  10 Oct 2025
+                  {formattedDate}
                 </span>
               </p>
 
@@ -98,6 +110,17 @@ export default async function BookingFormRoute({
           />
 
           <RenderCalendar availability={data.User?.availability as any} />
+
+          <Separator
+            orientation="vertical"
+            className="hidden md:block h-full w-[1px] "
+          />
+
+          <TimeTable
+            selectedDate={selectedDate}
+            userName={params.username}
+            duration={data.duration}
+          />
         </CardContent>
       </Card>
     </div>
