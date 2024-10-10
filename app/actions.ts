@@ -10,6 +10,7 @@ import {
 } from "./lib/zodSchemas";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { nylas } from "./lib/nylas";
 
 export async function OnboardingAction(prevState: any, formData: FormData) {
   const session = await requireUser();
@@ -135,6 +136,7 @@ export async function updateAvailabilityAction(formData: FormData) {
           where: {
             id: item.id,
           },
+
           data: {
             isActive: item.isActive,
             fromTime: item.fromTime,
@@ -176,4 +178,73 @@ export async function createEventTypeAction(
   });
 
   return redirect("/dashboard");
+}
+
+export async function createMeetingAction(formData: FormData) {
+  const getUserData = await prisma.user.findUnique({
+    where: {
+      userName: formData.get("username") as string,
+    },
+
+    select: {
+      grantEmail: true,
+      grantId: true,
+    },
+  });
+
+  if (!getUserData) {
+    throw new Error("User not found");
+  }
+
+  const eventTypeData = await prisma.eventType.findUnique({
+    where: {
+      id: formData.get("eventTypeId") as string,
+    },
+
+    select: {
+      title: true,
+      desciption: true,
+    },
+  });
+
+  const fromTime = formData.get("fromTime") as string;
+  const eventDate = formData.get("eventDate") as string;
+  const meetingLength = Number(formData.get("meetingLength"));
+  const provider = formData.get("provider") as string;
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+
+  const startDateTime = new Date(`${eventDate}T${fromTime}:00`);
+  const endDateTime = new Date(startDateTime.getTime() + meetingLength * 60000);
+
+  await nylas.events.create({
+    identifier: getUserData.grantId as string,
+
+    requestBody: {
+      title: eventTypeData?.title,
+      description: eventTypeData?.desciption,
+      when: {
+        startTime: Math.floor(startDateTime.getTime() / 1000),
+        endTime: Math.floor(endDateTime.getTime() / 1000),
+      },
+      conferencing: {
+        autocreate: {},
+        provider: provider as any,
+      },
+      participants: [
+        {
+          name: name,
+          email: email,
+          status: "yes",
+        },
+      ],
+    },
+
+    queryParams: {
+      calendarId: getUserData.grantEmail as string,
+      notifyParticipants: true,
+    },
+  });
+
+  return redirect("/success");
 }
