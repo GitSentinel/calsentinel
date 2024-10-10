@@ -29,7 +29,7 @@ export function CalendarCell({
 
   const isDateToday = isToday(date, getLocalTimeZone());
   const isOutsideOfMonth = !isSameMonth(currentMonth, date);
-  const finallyisDisabled = isUnavailable || isDisabled;
+  const finallyIsDisabled = isUnavailable || isDisabled;
 
   return (
     <td
@@ -46,8 +46,8 @@ export function CalendarCell({
           className={cn(
             "size-full rounded-sm flex items-center justify-center text-sm font-semibold",
             isSelected ? "bg-primary text-white" : "",
-            finallyisDisabled ? "text-muted-foreground cursor-not-allowed" : "",
-            !isSelected && !finallyisDisabled
+            finallyIsDisabled ? "text-muted-foreground cursor-not-allowed" : "",
+            !isSelected && !finallyIsDisabled
               ? "bg-secondary hover:bg-primary/10"
               : ""
           )}
