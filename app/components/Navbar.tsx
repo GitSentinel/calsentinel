@@ -6,7 +6,7 @@ import { ThemeToggle } from "./ThemeToggle";
 
 export function Navbar() {
   return (
-    <div className="flex py-5 items-center justify-between">
+    <div className="flex py-5 items-center justify-between mx-4">
       <Link href="/" className="flex items-center gap-2">
         <Image src={Logo} alt="Logo" className="size-10" />
         <h4 className="text-3xl font-semibold">

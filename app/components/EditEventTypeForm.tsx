@@ -42,6 +42,8 @@ interface iAppProps {
   callProvider: string;
 }
 
+let editDivStyle = "flex flex-col gap-y-2";
+
 export function EditEventForm({
   callProvider,
   desciption,
@@ -82,7 +84,7 @@ export function EditEventForm({
           <input type="hidden" name="id" value={id} />
 
           <CardContent className="grid gap-y-5">
-            <div className="flex flex-col gap-y-2">
+            <div className={editDivStyle}>
               <Label>Title</Label>
               <Input
                 name={fields.title.name}
@@ -93,7 +95,7 @@ export function EditEventForm({
               <p className="text-red-500 text-sm">{fields.title.errors}</p>
             </div>
 
-            <div className="flex flex-col gap-y-2">
+            <div className={editDivStyle}>
               <Label>URL Slug</Label>
               <div className="flex rounded-md">
                 <span className="inline-flex items-center px-3 rounded-l-md border-r-0 border-muted bg-muted text-sm text-muted-foreground">
@@ -110,7 +112,7 @@ export function EditEventForm({
               <p className="text-red-500 text-sm">{fields.url.errors}</p>
             </div>
 
-            <div className="flex flex-col gap-y-2">
+            <div className={editDivStyle}>
               <Label>Description</Label>
               <Textarea
                 name={fields.description.name}
@@ -123,7 +125,7 @@ export function EditEventForm({
               </p>
             </div>
 
-            <div className="flex flex-col gap-y-2">
+            <div className={editDivStyle}>
               <Label>Duration</Label>
               <Select
                 name={fields.duration.name}
@@ -147,7 +149,7 @@ export function EditEventForm({
               <p className="text-red-500 text-sm">{fields.duration.errors}</p>
             </div>
 
-            <div className="flex flex-col gap-y-2">
+            <div className={editDivStyle}>
               <Label>Video Call Provider</Label>
               <input
                 name={fields.videoCallSoftware.name}
