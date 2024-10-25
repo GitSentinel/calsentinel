@@ -1,4 +1,4 @@
-import { CloudRain, FastForward, ShieldCheck } from "lucide-react";
+import { CloudRain, FastForward, Rocket, ShieldCheck } from "lucide-react";
 
 const features = [
   {
@@ -21,7 +21,7 @@ const features = [
     name: "Easy to use",
     description:
       "Our platform is very easy to use. You can schedule meetings in minutes.",
-    icon: ,
+    icon: Rocket,
   },
 ];
 
