@@ -21,7 +21,7 @@ const features = [
     name: "Easy to use",
     description:
       "Our platform is very easy to use. You can schedule meetings in minutes.",
-    icon: FastForward,
+    icon: ,
   },
 ];
 
